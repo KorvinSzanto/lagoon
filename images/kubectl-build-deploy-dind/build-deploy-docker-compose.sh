@@ -533,6 +533,11 @@ yq write -i -- /kubectl-build-deploy/values.yaml 'routesAutogenerateShortSuffix'
 for i in $ROUTES_AUTOGENERATE_PREFIXES; do yq write -i -- /kubectl-build-deploy/values.yaml 'routesAutogeneratePrefixes[+]' $i; done
 yq write -i -- /kubectl-build-deploy/values.yaml 'kubernetes' $KUBERNETES
 yq write -i -- /kubectl-build-deploy/values.yaml 'lagoonVersion' $LAGOON_VERSION
+if [ "$LAGOON_FEATURE_ROOTLESS_WORKLOAD" = disabled ]; then
+	yq write -i -- /kubectl-build-deploy/values.yaml 'rootless' false
+else
+	yq write -i -- /kubectl-build-deploy/values.yaml 'rootless' true
+fi
 
 
 echo -e "\
