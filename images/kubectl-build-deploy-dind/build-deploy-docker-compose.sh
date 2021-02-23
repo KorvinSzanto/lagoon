@@ -1274,6 +1274,13 @@ if [[ "${CAPABILITIES[@]}" =~ "backup.appuio.ch/v1alpha1/Schedule" ]]; then
     --set lagoonEnvironmentType=$LAGOON_ENVIRONMENT_TYPE
 fi
 
+if [ "$LAGOON_FEATURE_STANDARD_NETWORK_POLICY" != disabled ]; then
+	# add standard network policy
+	helm template lagoon-network-policy /kubectl-build-deploy/helmcharts/network-policy \
+		-f /kubectl-build-deploy/values.yaml \
+		> $YAML_FOLDER/lagoon-network-policy.yaml
+fi
+
 if [ "$(ls -A $YAML_FOLDER/)" ]; then
   find $YAML_FOLDER -type f -exec cat {} \;
   kubectl apply --insecure-skip-tls-verify -n ${NAMESPACE} -f $YAML_FOLDER/
